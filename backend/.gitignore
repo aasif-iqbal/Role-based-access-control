@@ -1,0 +1,9 @@
+#PORT
+.env
+node_modules
+
+# Output of the TypeScript compiler
+# Ignore the compiled JavaScript files in the dist directory
+dist                   
+
+
