@@ -1,25 +1,24 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
-import { permission } from "process";
 
 // Define the interface for the document
 interface PermissionDocument extends Document {
-  user_id: any;
-  permissions: any;  
+  // permission_id: mongoose.Schema.Types.ObjectId;
+  permission_name: string;
+  is_default: number;  
   createdAt: Date;
   updatedAt: Date;
 }
 
-// Define the schema for the document 
+// Define the schema for the document
 const PermissionSchema: Schema<PermissionDocument> = new Schema<PermissionDocument>({
-  user_id: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: 'User' 
+  permission_name: {
+    type: String,
+    required: true
   },
-  permissions: [{
-    permission_name: String,
-    permission_value: [Number]
-  }],   
+  is_default: {
+    type: Number,
+    default: 0 // 
+  },
   createdAt: {
     type: Date,
     default: Date.now
@@ -28,27 +27,16 @@ const PermissionSchema: Schema<PermissionDocument> = new Schema<PermissionDocume
     type: Date,
     default: Date.now
   }
-});   
+}); 
 
 export const permissionModel: Model<PermissionDocument> = mongoose.model<PermissionDocument>('Permission', PermissionSchema); 
 
-
 /*
+What is_Default Means
+is_Default is a flag used to specify whether a particular permission is automatically included for a role when it is created or initialized.
 
-permissions: [
-  {
-    permission_name: 'user',
-    permission_value: [0, 1, 2, 3] // 0->Create, 1->Read, 2->Update, 3->Delete
-  },
-  {
-    permission_name: 'post',
-    permission_value: [0, 1, 2] // 0->Create, 1->Read, 2->Update, 3->Delete
-  },
-  {
-    permission_name: 'comment',
-    permission_value: [0, 1, 2] // 0->Create, 1->Read, 2->Update, 3->Delete
-  }
-]
+It uses a numeric value to represent a boolean state:
 
-
- */ 
+0 → Not Default: This permission is optional and not automatically assigned to the role.
+1 → Default: This permission is mandatory or pre-assigned to the role by default.
+*/

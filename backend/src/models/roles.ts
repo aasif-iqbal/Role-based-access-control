@@ -1,10 +1,10 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
 interface RoleDocument extends Document {
-  role_name: string;
-  description: string;
-  createdAt: Date;
-  updatedAt: Date;
+    role_name: string;
+    description: string;
+    createdAt: Date;
+    updatedAt: Date;
 }   
 
 const RoleSchema: Schema<RoleDocument> = new Schema<RoleDocument>({

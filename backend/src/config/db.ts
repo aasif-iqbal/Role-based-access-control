@@ -1,15 +1,14 @@
-import mongoose, { connection } from "mongoose";
-
-const DB_NAME:string = ``;
+import mongoose from "mongoose";
 
 const db_connection = async (): Promise<typeof mongoose | void> => {
     
     try{
-        const connection = await mongoose.connect(process.env.MONGO_URI as string);
+        const localConnectionString = `${process.env.MONGO_URI}`;
+        const connection = await mongoose.connect(localConnectionString);            
 
         console.log('Database connected successfully');
-        return connection;
         
+        return connection;        
     }catch(err){
         console.error(err);
     }

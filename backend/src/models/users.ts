@@ -6,6 +6,8 @@ interface UserDocument extends Document {
     email: string;
     password: string;
     role: number;
+    // role: Array<number>; //[0,1,2]
+    // permission: { id: string; value: number[] }[]; // Define an array of objects
     createdAt: Date;
     updatedAt: Date;
 }
@@ -39,4 +41,4 @@ const userSchema: Schema<UserDocument> = new Schema<UserDocument>({
 
 const userModel: Model<UserDocument> = mongoose.model<UserDocument>('User', userSchema);
 
-export default userModel;
+export { userModel };
