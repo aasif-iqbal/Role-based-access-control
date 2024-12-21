@@ -57,38 +57,9 @@ doc: https://github.com/microsoft/TypeScript-Node-Starter
     - npm run build
     - npm start
 
-------------------------------------------------------------------------------------
-npm i --save-dev @types/otp-generator
 
-
-
-
-------------------------------------------------------------------------------------
-POST
-localhost:3000/v1/send-otp
-Body - json
+POST | localhost:3000/v1/permission
 {
-    "phone_number":"8989119911"
+    "permission_name":"write",
+    "default":1
 }
-------------------------------------------------------------------------------------
-POST
-localhost:3000/v1/verify-otp
-Body - json
-{
-    "otp":"448587"
-}
-
-
-https://www.fey.com/
-
-
-
-
-The error EADDRINUSE: address already in use indicates that port 3000 is already being used by another process, so the application can't bind to it.
-Solution:
-npx kill-port 3000
-
-
-verify Geo Permission
-https://console.twilio.com/us1/develop/verify/settings/geopermissions?_gl=1*1f0s9gm*_gcl_au*NTY3OTM1OTExLjE3MjAwOTQ2MDU.*_ga*NTQwMTg4MzE3LjE3MjAwOTQ2MDU.*_ga_RRP8K4M4F3*MTcyNjY0MjAyNy41LjEuMTcyNjY0MjIwMy4wLjAuMA..
-

@@ -2,6 +2,7 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 
 interface RoleDocument extends Document {
     role_name: string;
+    value: number;
     description: string;
     createdAt: Date;
     updatedAt: Date;
@@ -11,6 +12,10 @@ const RoleSchema: Schema<RoleDocument> = new Schema<RoleDocument>({
     role_name: {
         type: String,
         required: true
+    },
+    value: {
+        type: Number,
+        required: true      
     },
     description: {
         type: String,

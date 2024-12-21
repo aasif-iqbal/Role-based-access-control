@@ -4,7 +4,7 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 interface PermissionDocument extends Document {
   // permission_id: mongoose.Schema.Types.ObjectId;
   permission_name: string;
-  is_default: number;  
+  is_default: number;   // default_permission
   createdAt: Date;
   updatedAt: Date;
 }
@@ -17,7 +17,7 @@ const PermissionSchema: Schema<PermissionDocument> = new Schema<PermissionDocume
   },
   is_default: {
     type: Number,
-    default: 0 // 
+    default: 0 //0->user not able to access this permission, 1->user can access this permission
   },
   createdAt: {
     type: Date,

@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
 import { ReturnResponse } from "../utils/interfaces";
 import { permissionModel } from "../models/permissions";
-
-
 const createPermission = async (req: Request, res: Response): Promise<void> => {
     try {
         const { permission_name } = req.body;   
@@ -18,9 +16,9 @@ const createPermission = async (req: Request, res: Response): Promise<void> => {
             res.status(400).json(response); 
         }
         
-        // for default permission
+        // for default permission - By default it set to 0
         if(req.body.default){            
-            const { is_default } = req.body.default        
+            const { is_default } = req.body.default;        
         }
 
         await permissionModel.create(req.body);
