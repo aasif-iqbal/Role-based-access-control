@@ -18,15 +18,16 @@ const createPermission = async (req: Request, res: Response): Promise<void> => {
         
         // for default permission - By default it set to 0
         if(req.body.default){            
-            const { is_default } = req.body.default;        
+            const is_default = req.body.default;  
+            await permissionModel.updateOne({ is_default: 0 }, { $set: { is_default: 1 } });                 
         }
 
-        await permissionModel.create(req.body);
+        const permission = await permissionModel.create(req.body);
 
         const response: ReturnResponse = {
             status: "success",
             message: "Permission created successfully",
-            data: []
+            data: permission
         }
         
         res.status(201).json(response);

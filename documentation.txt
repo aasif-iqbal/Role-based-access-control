@@ -63,3 +63,10 @@ POST | localhost:3000/v1/permission
     "permission_name":"write",
     "default":1
 }
+
+POST | localhost:3000/v1/role
+{
+    "role_name":"Admin",
+    "value":1,  
+    "description":"admin can access all permission"
+}

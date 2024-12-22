@@ -1,9 +1,13 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
+type Permission = {
+  permission_name: string; // Name of the permission
+  permission_value: number[]; // Array of permission codes
+};
 // Define the interface for the document
 interface UserPermissionDocument extends Document {
-  user_id: any;
-  permissions: any;  
+  user_id: mongoose.Schema.Types.ObjectId;
+  permissions: Permission[];  
   createdAt: Date;
   updatedAt: Date;
 }
@@ -17,7 +21,7 @@ const UserPermissionSchema: Schema<UserPermissionDocument> = new Schema<UserPerm
   },
   permissions: [{
     permission_name: String,
-    permission_value: [Number]
+    permission_value: [Number] // 0->Create, 1->Read, 2->Update, 3->Delete
   }],   
   createdAt: {
     type: Date,
