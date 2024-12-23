@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { ReturnResponse } from "../utils/interfaces";
 import { userModel } from "../models/users";
 
-const createUser = async (req: Request, res: Response): Promise<void> => {
+const registration = async (req: Request, res: Response): Promise<void> => {
   
   const { name, email, password, role } = req.body;
 
@@ -29,5 +29,5 @@ const createUser = async (req: Request, res: Response): Promise<void> => {
 }
 
 export {
-  createUser
+  registration
 }
