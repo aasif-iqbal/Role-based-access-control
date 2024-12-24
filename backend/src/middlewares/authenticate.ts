@@ -1,4 +1,6 @@
 import jwt from 'jsonwebtoken';
+// import authService from '../services/authService';
+
 import { Request, Response, NextFunction } from 'express';
 
 const Auth = (req: Request, res: Response, next: NextFunction) => {
@@ -18,4 +20,4 @@ const Auth = (req: Request, res: Response, next: NextFunction) => {
   }  
 }
 
-export default Auth
+export default Auth;
