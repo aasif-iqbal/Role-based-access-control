@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { ReturnResponse } from "../utils/interfaces";
 import { userModel } from "../models/users";
+import { generateAuthToken } from "../services/authService";
 
 const registration = async (req: Request, res: Response): Promise<void> => {
   
@@ -53,6 +54,18 @@ const login = async(req: Request, res: Response): Promise<void> => {
           res.status(400).json(response);
         }         
       }
+            
+      const payload = { 
+        email:user.email, 
+        role: user.role 
+      };
+
+      const token = generateAuthToken(payload);
+      console.log(token);
+      // set token header
+      res.header('auth-token', token);
+      // set token cookie
+      res.cookie('token', token, { httpOnly: true });
 
       const response: ReturnResponse = {
         status: "success",
