@@ -41,6 +41,14 @@ const createPermission = async (req: Request, res: Response): Promise<void> => {
     }
 }
 
+const getPermissions = async (req: Request, res: Response): Promise<void> => {}
+const updatePermission = async (req: Request, res: Response): Promise<void> => {}
+const deletePermission = async (req: Request, res: Response): Promise<void> => {}
+
+
 export {
-    createPermission
+    createPermission,
+    getPermissions,
+    updatePermission,
+    deletePermission
 }
