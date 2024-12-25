@@ -13,7 +13,9 @@ const createPermission = async (req: Request, res: Response): Promise<void> => {
                 message: "Permission already exists",
                 data: []
             }
+
             res.status(400).json(response); 
+            return;
         }
         
         // for default permission - By default it set to 0
@@ -31,6 +33,7 @@ const createPermission = async (req: Request, res: Response): Promise<void> => {
         }
         
         res.status(201).json(response);
+        return;
 
     } catch (error) {
         console.log(error);

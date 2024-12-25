@@ -3,5 +3,5 @@ interface ReturnResponse {
     message: String;
     data: {} | [];
   }
-  
-  export { ReturnResponse };
+
+export { ReturnResponse };
