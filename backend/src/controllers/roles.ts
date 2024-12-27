@@ -26,7 +26,8 @@ const createRoles = async(req: Request, res: Response): Promise<void> => {
         }
         res.status(201).json(response);    
     } catch (error) {
-            
+        console.error(error);
+        res.status(500).json({ message: 'Internal server error' }); 
     }
 }   
 
@@ -34,4 +35,17 @@ const getRoles = async(req: Request, res: Response): Promise<void> => {
     
 }
 
-export { createRoles };
+const updateRole = async(req: Request, res: Response): Promise<void> => {
+    
+}   
+
+const deleteRole = async(req: Request, res: Response): Promise<void> => {
+    
+}
+
+export { 
+    createRoles,
+    getRoles,
+    updateRole,
+    deleteRole
+};

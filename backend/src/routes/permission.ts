@@ -11,9 +11,11 @@ import {
 
 const router = express.Router();
 
-router.post("/", Auth, onlyAdminAccess, validatePermission, createPermission); // POST /v1/permission
-router.get("/", Auth, onlyAdminAccess, validatePermission, getPermissions); // POST /v1/permission
-router.patch("/", Auth, onlyAdminAccess, validatePermission, updatePermission); // POST /v1/permission
-router.delete("/", Auth, onlyAdminAccess, validatePermission, deletePermission); // POST /v1/permission
+router.post("/admin/permission", Auth, onlyAdminAccess, validatePermission, createPermission); // POST /v1/permission
+router.get("/admin/permission", Auth, onlyAdminAccess, validatePermission, getPermissions); // POST /v1/permission
+router.patch("/admin/permission/:id", Auth, onlyAdminAccess, validatePermission, updatePermission); // POST /v1/permission
+
+//Method:DELETE | localhost:3000/v1/admin/permission/12345
+router.delete("/admin/permission/:id", Auth, onlyAdminAccess, validatePermission, deletePermission);
 
 export default router;

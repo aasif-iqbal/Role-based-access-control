@@ -93,8 +93,54 @@ const getProfile = async (req: Request, res: Response): Promise<void> => {
   }
 };  
 
+/*
+  Only access by Admin 
+
+  email: "subadmin@gmail.com",
+  name: "subadmin",
+  password: "subadmin@123",
+  role: 1
+*/
+const createUser = async (req: Request, res: Response): Promise<void> => {
+  
+  // Name & email
+  // generate random password and send mail to user
+
+  if(req.body.role !== 0){
+    const response: ReturnResponse = {
+      status: "error",
+      message: "Only Admin can create users",
+      data: []
+    }
+    res.status(400).json(response); 
+  } 
+
+  const user = await userModel.create(req.body);
+
+  // sendMail(user.email, user.password);
+
+  const response: ReturnResponse = {
+    status: "success",
+    message: "User created successfully",
+    data: user
+  }
+
+  res.status(201).json(response); 
+}
+
+const updateUser = async (req: Request, res: Response): Promise<void> => {
+  
+} 
+
+const deleteUser = async (req: Request, res: Response): Promise<void> => {
+  
+}
+
 export {
   registration,
   login,
-  getProfile
+  getProfile,
+  createUser,
+  updateUser,
+  deleteUser
 }

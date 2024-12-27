@@ -7,6 +7,6 @@ const router = Router();
 
 router.use('/user', user);
 router.use('/role', role);
-router.use('/permissions', permission);
+router.use('/', permission);
 
 export default router;

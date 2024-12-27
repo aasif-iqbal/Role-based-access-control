@@ -11,7 +11,7 @@ const Auth = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {  
       const token: string | undefined = req.headers['authorization']?.split(' ')[1] || req.cookies.token;
       
-      console.log(token);
+      // console.log(token);
       const decodedToken = verifyAuthToken(token as string);
       
       if (!token) {
