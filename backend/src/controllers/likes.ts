@@ -50,20 +50,29 @@ const postUnlike = async (req: Request, res: Response): Promise<void> => {
 const deleteLike = async (req: Request, res: Response): Promise<void> => {};
 
 const getLikes = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const { postId } = req.body;
 
-  const { postId } = req.body;
+    const likeCount = await likeModel.find({ postId }).countDocuments();
 
-  const likeCount = await likeModel.find({ postId }).countDocuments();
+    if(likeCount > 0){
+      const response: ReturnResponse = {
+          status: "success",
+          message: "total likes",
+          data: likeCount 
+      }
 
-  if(likeCount > 0){
+      res.status(200).json(response); 
+    } 
+  }catch (error) {
+      // console.error(error);
     const response: ReturnResponse = {
-        status: "success",
-        message: "total likes",
-        data: likeCount 
+        status: "error",
+        message: "Internal server error",
+        data: []  
     }
-
-    res.status(200).json(response); 
-  } 
+    res.status(500).json(response);    
+  }
 };  
 
 export{
