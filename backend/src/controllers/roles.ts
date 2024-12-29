@@ -32,7 +32,11 @@ const createRoles = async(req: Request, res: Response): Promise<void> => {
 }   
 
 const getRoles = async(req: Request, res: Response): Promise<void> => {
-    
+    try {
+        
+    } catch (error) {
+        
+    }
 }
 
 const updateRole = async(req: Request, res: Response): Promise<void> => {
