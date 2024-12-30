@@ -5,7 +5,10 @@ TODO:
 4. create, read, update, delete for permissions [Done]
 5. create, read, update, delete for categories 
 6. create, read, update, delete for posts
-7. Store and Get Roles API for Admin [12]
+7. Store and Get Roles API for Admin - [done]
+8. Send Mail to User
+9. Create PostLikes Controller 
+10. Assign Default permission on user registration 
 
 ## What i learn
 - Is it correct Promise<void> for  api development

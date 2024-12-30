@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import { ReturnResponse } from "../utils/interfaces";
 import { userModel } from "../models/users";
 import { generateAuthToken } from "../services/authService";
+import { permissionModel } from "../models/permissions";
+import { userPermissionModel } from "../models/user-permissions";
 
 const registration = async (req: Request, res: Response): Promise<void> => {
   
@@ -19,6 +21,25 @@ const registration = async (req: Request, res: Response): Promise<void> => {
   }
   
   const user = await userModel.create(req.body);
+
+  // Assign default permission
+  const defaultPermissions = await permissionModel.find({ is_default: 1 }); // is_default = 1 means user can access this permission like comment, likes
+
+  if(defaultPermissions.length > 0){
+    let permissions: any = [];
+
+    defaultPermissions.forEach((permission: any) => {
+      permissions.push({
+        permission_name: permission.permission_name,
+        permission_value: [0, 1, 2, 3]
+      })  
+    })    
+
+    await userPermissionModel.create({
+      user_id: user._id,
+      permissions: permissions
+    })  
+  }
 
   const response: ReturnResponse = {
     status: "success",

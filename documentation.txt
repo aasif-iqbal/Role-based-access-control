@@ -57,6 +57,30 @@ doc: https://github.com/microsoft/TypeScript-Node-Starter
     - npm run build
     - npm start
 
+POST | localhost:3000/v1/user/registration
+
+{
+	"name": "Adil ashraf",
+    "email":"adil@x.com",
+    "password":"12345",
+    "role":1
+}
+
+Response:
+{
+    "status": "success",
+    "message": "User created successfully",
+    "data": {
+        "name": "Adil ashraf",
+        "email": "adil@x.com",
+        "password": "12345",
+        "role": 1,
+        "_id": "6772bbc54573ba0468410ad5",
+        "createdAt": "2024-12-30T15:27:01.568Z",
+        "updatedAt": "2024-12-30T15:27:01.568Z",
+        "__v": 0
+    }
+}
 
 POST | localhost:3000/v1/permission
 {
