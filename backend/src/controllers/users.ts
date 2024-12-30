@@ -7,7 +7,7 @@ import { userPermissionModel } from "../models/user-permissions";
 
 const registration = async (req: Request, res: Response): Promise<void> => {
   
-  const { name, email, password, role } = req.body;
+  const { name, email, password } = req.body;
 
   const existingUser = await userModel.findOne({ email });
 
@@ -18,6 +18,7 @@ const registration = async (req: Request, res: Response): Promise<void> => {
       data: []
     }
     res.status(400).json(response); 
+    return;
   }
   
   const user = await userModel.create(req.body);
@@ -48,6 +49,7 @@ const registration = async (req: Request, res: Response): Promise<void> => {
   }
 
   res.status(201).json(response);
+  return;
 }
 
 const login = async(req: Request, res: Response): Promise<void> => {
@@ -82,16 +84,55 @@ const login = async(req: Request, res: Response): Promise<void> => {
       };
 
       const token = generateAuthToken(payload);
-      console.log(token);
+      // console.log(token);
       // set token header
       res.header('auth-token', token);
       // set token cookie
       res.cookie('token', token, { httpOnly: true });
 
+      // get User-data with all permissions
+      const userData = await userModel.aggregate([
+        {
+          $match: {
+            email: user.email
+          }
+        },
+        {
+          $lookup: {
+            from: "userpermissions",
+            localField: "_id",
+            foreignField: "user_id",
+            as: "permissions"
+          }
+        },
+        {
+          $project: {
+            _id: 1,
+            email: 1,
+            name: 1,
+            role: 1,
+            permissions: {
+              $cond: {
+                if:{$isArray: "$permissions"},
+                then: {$arrayElemAt: ["$permissions", 0]},
+                else: null
+              }
+            },
+          }
+        },{
+            
+              $addFields: {
+                "permissions": { 
+                  "permissions": "$permissions.permissions"              
+            }
+          }
+        } 
+      ]);
+
       const response: ReturnResponse = {
         status: "success",
         message: "User logged in successfully",
-        data: user 
+        data: userData 
       }
 
       res.status(200).json(response);      

@@ -8,7 +8,6 @@ const userSchema = Joi.object({
     "any.required": "Email is required",
   }),
   password: Joi.string().required(),
-  role: Joi.number().required(),
 }); 
 
 export const validateUser = (req: Request, res: Response, next: NextFunction) => {
