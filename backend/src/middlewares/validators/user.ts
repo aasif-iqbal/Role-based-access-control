@@ -1,5 +1,6 @@
 import Joi from "joi";
 import { Request, Response, NextFunction } from "express";
+import { permission } from "process";
 
 const userSchema = Joi.object({
   name: Joi.string().min(3).max(30).required(),
@@ -8,6 +9,8 @@ const userSchema = Joi.object({
     "any.required": "Email is required",
   }),
   password: Joi.string().required(),
+  role: Joi.number().optional(),
+  permissions: Joi.array().optional()
 }); 
 
 export const validateUser = (req: Request, res: Response, next: NextFunction) => {

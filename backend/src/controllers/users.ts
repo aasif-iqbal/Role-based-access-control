@@ -4,6 +4,11 @@ import { userModel } from "../models/users";
 import { generateAuthToken } from "../services/authService";
 import { permissionModel } from "../models/permissions";
 import { userPermissionModel } from "../models/user-permissions";
+import mongoose from "mongoose";
+import { AuthenticatedRequest } from '../types/authenticated-request';
+import crypto from 'crypto';
+import bcrypt from 'bcrypt';
+import { number } from "joi";
 
 const registration = async (req: Request, res: Response): Promise<void> => {
   
@@ -57,7 +62,7 @@ const login = async(req: Request, res: Response): Promise<void> => {
       const { email, password } = req.body;
 
       const user: any = await userModel.findOne({ email });
-
+      
       if (!user) {
         const response: ReturnResponse = {
           status: "error",
@@ -79,18 +84,19 @@ const login = async(req: Request, res: Response): Promise<void> => {
       }
             
       const payload = { 
+        _id: user._id,
         email:user.email, 
         role: user.role 
       };
 
       const token = generateAuthToken(payload);
-      // console.log(token);
+
       // set token header
       res.header('auth-token', token);
       // set token cookie
       res.cookie('token', token, { httpOnly: true });
 
-      // get User-data with all permissions
+      // get user-data with all permissions - this will help for frontend to handle permissions and rights of user 
       const userData = await userModel.aggregate([
         {
           $match: {
@@ -119,8 +125,7 @@ const login = async(req: Request, res: Response): Promise<void> => {
               }
             },
           }
-        },{
-            
+        },{            
               $addFields: {
                 "permissions": { 
                   "permissions": "$permissions.permissions"              
@@ -141,46 +146,148 @@ const login = async(req: Request, res: Response): Promise<void> => {
   }
 }
 
-const getProfile = async (req: Request, res: Response): Promise<void> => {
-  try {
-    const user = await userModel.findById(req.params.id);
-    if (!user) {
-      res.status(404).json({ message: 'User not found' });
-    } else {
-      res.status(200).json({ user });
+const getAllUsers = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+  try {     
+      const userId = req.user?._id;
+
+      // console.log('userId',userId);
+      const user = await userModel.aggregate([
+        {
+            $match: {
+                _id: {
+                    $ne: new mongoose.Types.ObjectId(userId), // Exclude the current user
+                }                    
+            }
+          },{
+            $lookup: {
+                from: "userpermissions",
+                localField: "_id",
+                foreignField: "user_id",
+                as: "permissions"
+            }
+          },{
+            $project: {
+                _id: 0
+            }
+          }        
+    ]); 
+
+    const response: ReturnResponse = {
+      status: "success",
+      message: "Users fetched successfully",
+      data: user  
     }
+
+    res.status(200).json(response); 
+
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };  
 
+
+const getProfile = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+  try {
+    const user = await userModel.findById(req.params.id);
+      
+    if (!user) {
+      res.status(404).json({ message: 'User not found' });
+      return;
+    } else {
+      res.status(200).json({ user });
+      return;
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+    return;
+  }
+};  
+
 /*
-  Only access by Admin 
-
-  email: "subadmin@gmail.com",
-  name: "subadmin",
-  password: "subadmin@123",
-  role: 1
+  Only access by Admin    
 */
-const createUser = async (req: Request, res: Response): Promise<void> => {
-  
-  // Name & email
-  // generate random password and send mail to user
+const createUser = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
+    
+  // generate random password(crypto) and send mail to user
+  const { email, name, role, permissions } = req.body;
 
-  if(req.body.role !== 0){
+  const existingUser = await userModel.findOne({ email });
+
+  if (existingUser) {
     const response: ReturnResponse = {
       status: "error",
-      message: "Only Admin can create users",
+      message: "User already exists",
+      data: []
+    }
+
+    res.status(400).json(response); 
+    return;
+  }
+  const password = crypto.randomBytes(4).toString('hex');
+  const hashedPassword = await bcrypt.hash(password, 10); 
+  
+  const userObj = {
+    name,
+    email,
+    password: hashedPassword,
+    role   
+  }
+
+  if(req.user?.role !== 1){ // 1 means admin
+    const response: ReturnResponse = {
+      status: "error",
+      message: "This role is reserved for admin",
       data: []
     }
     res.status(400).json(response); 
-  } 
+    return;
+  } else if(req.body.role){ // 1 means admin
+    userObj.role = req.body.role as number;
+  }
 
-  const user = await userModel.create(req.body);
+  const user = new userModel(userObj);
+  const userData = await user.save();
 
+  // const user:any = [];
+  // Add Permissions to user from admin dashboard
+  if(req.body.permissions !== undefined && req.body.permissions.length > 0){
+  
+    const permissionArray: any[] = [];
+    const permissions = req.body.permissions;
+    console.log('permissions', permissions);
+    await Promise.all(
+      permissions.map(async (permission: any) => {
+          console.log('permission-map', permission);
+        const permissionData = await permissionModel.findOne({ _id: permission.id }) as any;
+
+        if (!permissionData) {
+          throw new Error("Permission not found");
+        }
+
+        console.log('permissionData', permissionData);
+      
+        permissionArray.push({
+          permission_name: permissionData?.permission_name,
+          permission_value: permission?.value
+        });
+      })
+  );     
+
+  //if admin is created User - send Mail to User with there user name and password 
+  // const userEmailTemplate = `<h3>Hi,${userData.name} your password:${userData.password}</h3>`;
+
+  const userPermission = new userPermissionModel({
+    user_id: userData?._id,
+    permissions: permissionArray
+  })
+
+  await userPermission.save();  
+  }
+
+  // const user = await userModel.create(req.body);
   // sendMail(user.email, user.password);
-
   const response: ReturnResponse = {
     status: "success",
     message: "User created successfully",
@@ -188,6 +295,7 @@ const createUser = async (req: Request, res: Response): Promise<void> => {
   }
 
   res.status(201).json(response); 
+  return;
 }
 
 const updateUser = async (req: Request, res: Response): Promise<void> => {
@@ -201,6 +309,7 @@ const deleteUser = async (req: Request, res: Response): Promise<void> => {
 export {
   registration,
   login,
+  getAllUsers,
   getProfile,
   createUser,
   updateUser,

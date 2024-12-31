@@ -7,7 +7,7 @@ interface UserDocument extends Document {
     password: string;
     role: number;
     // role: Array<number>; //[0,1,2]
-    // permission: { id: string; value: number[] }[]; // Define an array of objects
+    permissions: { id: string; value: number[] }[]; // Define an array of objects
     createdAt: Date;
     updatedAt: Date;
 }
@@ -29,6 +29,12 @@ const userSchema: Schema<UserDocument> = new Schema<UserDocument>({
         type: Number,
         default: 0 // 0->Normal-User, 1->Admin, 2->Sub-Admin, 3->Editor
     },
+    permissions: [
+        {
+            id: String,
+            value: [Number] // 0->Create, 1->Read, 2->Update, 3->Delete
+        }
+    ],  
     createdAt: {
         type: Date,
         default: Date.now

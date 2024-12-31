@@ -1,12 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
-// import { AuthenticatedRequest } from '../utils/interfaces';
-export interface AuthenticatedRequest extends Request {
-  user?: any; // Define the type of 'user' as needed, e.g., specific fields like `{ id: string, email: string }`
-}
+import { AuthenticatedRequest } from '../types/authenticated-request';
+
 const onlyAdminAccess = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {  
   try {
-    // console.log(req.user.role);
-    if (req.user.role !== 0) {
+    console.log('onlyAdminAccess middleware', req.user?.role);
+    if (req.user?.role !== 1) { // 1->Admin 
       return res.status(403).json({ message: 'Forbidden' });
     }
     next();
