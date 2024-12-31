@@ -283,7 +283,7 @@ const createUser = async (req: AuthenticatedRequest, res: Response): Promise<voi
     permissions: permissionArray
   })
 
-  await userPermission.save();  
+  await userPermission.save(); 
   }
 
   // const user = await userModel.create(req.body);
