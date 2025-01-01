@@ -2,8 +2,8 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 // Define the interface for the document
 interface RoutePermissionDocument extends Document {
   router_endpoint: string;
-  roles: number; // 0-admin, 1-subadmin, 2-editor, 3-User
-  permission: number; //0-read 1-write, 2-update, 3-delete
+  roles: number;            // 0-admin, 1-subadmin, 2-editor, 3-User
+  permission: number;       // 0-read 1-write, 2-update, 3-delete
   // permission: Array<number>; //[0,1,2]
   createdAt: Date;
   updatedAt: Date;  
@@ -33,22 +33,3 @@ const routePermissionSchema: Schema<RoutePermissionDocument> = new Schema<RouteP
 });
 
 export const routePermissionModel: Model<RoutePermissionDocument> = mongoose.model<RoutePermissionDocument>('RoutePermission', routePermissionSchema);  
-
-// const routePermissionSchema = new Mongoose.Schema({
-
-//   router_endpoint:{        
-//       type:String, 
-//       required: true,        
-//   },
-//   roles:{ // clientSide dropdown - with roleId
-//     //type:mongoose.Schema.Types.ObjectId, - (optinal)
-//       type:Number, // 0-admin, 1-subadmin, 2-editor, 3-User
-//       required:true
-//   },
-//   permission:{
-//       type:Number, //0-read 1-write, 2-update, 3-delete
-//       required:true
-//   }
-// })
-
-// module.exports = mongoose.model('RoutePermission', routePermissionSchema);

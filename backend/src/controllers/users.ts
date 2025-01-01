@@ -8,7 +8,6 @@ import mongoose from "mongoose";
 import { AuthenticatedRequest } from '../types/authenticated-request';
 import crypto from 'crypto';
 import bcrypt from 'bcrypt';
-import { number } from "joi";
 
 const registration = async (req: Request, res: Response): Promise<void> => {
   
@@ -255,8 +254,11 @@ const createUser = async (req: AuthenticatedRequest, res: Response): Promise<voi
   if(req.body.permissions !== undefined && req.body.permissions.length > 0){
   
     const permissionArray: any[] = [];
+  
     const permissions = req.body.permissions;
+  
     console.log('permissions', permissions);
+   
     await Promise.all(
       permissions.map(async (permission: any) => {
           console.log('permission-map', permission);
@@ -300,6 +302,82 @@ const createUser = async (req: AuthenticatedRequest, res: Response): Promise<voi
 
 const updateUser = async (req: Request, res: Response): Promise<void> => {
   
+  try {
+    const { name, email, password, role } = req.body;      
+    
+    const id: any = req.params.id; 
+  
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      res.status(400).json({ error: "Invalid ObjectId format" });
+      return;
+    }
+
+    const user = await userModel.findById(id);
+
+    if (!user) {
+      res.status(404).json({ message: 'User not found' });
+      return;
+    }
+
+    const _user: any = {}
+
+    if (name) _user.name = name;
+    if (email) _user.email = email;
+    // hased password before update
+    if (password) _user.password = password; 
+    if (role) _user.role = role;
+
+    
+    // update user
+    const updatedUser: any = await userModel.findByIdAndUpdate(id, _user, { new: true });
+    
+    // update user permissions
+    if(req.body.permissions !== undefined && req.body.permissions.length > 0){
+      const permissionArray: any[] = [];
+  
+      const permissions = req.body.permissions;
+  
+      console.log('permissions', permissions);
+  
+      await Promise.all(
+        permissions.map(async (permission: any) => {
+          console.log('permission-map', permission);
+        const permissionData = await permissionModel.findOne({ _id: permission.id }) as any;
+
+        if (!permissionData) {
+          throw new Error("Permission not found");
+        } 
+
+        console.log('permissionData', permissionData);
+      
+        permissionArray.push({
+          permission_name: permissionData?.permission_name,
+          permission_value: permission?.value
+        });
+      })      
+  );  
+  // update user permissions
+  const userPermission: any = new userPermissionModel({
+    user_id: user?._id,
+    permissions: permissionArray
+  })
+
+  await userPermission.save(); 
+  }
+
+    const response: ReturnResponse = {
+      status: "success",
+      message: "User updated successfully",
+      data: updatedUser
+    }
+
+    res.status(200).json(response); 
+    return;
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
 } 
 
 const deleteUser = async (req: Request, res: Response): Promise<void> => {
