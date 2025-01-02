@@ -1,5 +1,7 @@
 # Installation
 npm init
+npm install ts-node --save-dev
+
 npm install typescript ts-node @types/node --save-dev
 npm i express
 npm install typescript ts-node @types/node @types/express --save-dev  (--save-dev Only for development enviroment).
@@ -94,3 +96,44 @@ POST | localhost:3000/v1/role
     "value":1,  
     "description":"admin can access all permission"
 }
+
+
+POST | 
+
+
+{
+    "name":"Khan-baba",
+    "email":"khan@x.com",
+    "password":"12345",
+    "role":0,
+    "permissions":[
+        {
+            "id":"6772e1310e7ce19cbcd8a444",
+            "value": [0,1,2,3]
+        }
+    ]
+
+}
+
+
+
+get all routes
+[
+  { method: 'GET', path: '/' },
+  { method: 'POST', path: 'v1/user/registration' },
+  { method: 'POST', path: 'v1/user/login' },
+  { method: 'POST', path: 'v1/user' },
+  { method: 'GET', path: 'v1/user' },
+  { method: 'GET', path: 'v1/user/:id' },
+  { method: 'PATCH', path: 'v1/user/:id' },
+  { method: 'DELETE', path: 'v1/user/:id' },
+  { method: 'POST', path: 'v1/role' },
+  { method: 'GET', path: 'v1/role' },
+  { method: 'PATCH', path: 'v1/role/:id' },
+  { method: 'DELETE', path: 'v1/role/:id' },
+  { method: 'POST', path: 'v1/permission' },
+  { method: 'GET', path: 'v1/permission' },
+  { method: 'PATCH', path: 'v1/permission/:id' },
+  { method: 'DELETE', path: 'v1/permission/:id' },
+  { method: 'GET', path: 'v1/route-permissions/routes' }
+]
