@@ -1,4 +1,4 @@
-TODO:
+TODO: 
 1.  Add jwt token [Done]
 2.  Only admin can access Permission api's - onlyAdminAccess [Done]
 3.  getProfile(controller) - get user profile | api- profile 
@@ -12,6 +12,9 @@ TODO:
 11. create query for get permissions in Login api - [Done]
 12. Add permission to get & create user api - [Done]
 13. Update permission
+14. Get all routes endpoints - [Done]
+15. Create & Update RouterPermissions Api -
+
 
 ## What i learn
 - Is it correct Promise<void> for  api development

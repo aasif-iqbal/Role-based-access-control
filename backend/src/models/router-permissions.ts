@@ -2,9 +2,10 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 // Define the interface for the document
 interface RoutePermissionDocument extends Document {
   router_endpoint: string;
-  roles: number;            // 0-admin, 1-subadmin, 2-editor, 3-User
-  permission: number;       // 0-read 1-write, 2-update, 3-delete
-  // permission: Array<number>; //[0,1,2]
+  method: string;
+  roles: number;            // 0-admin, 1-subadmin, 2-editor, 3-User   
+  permissions: Array<number>; //[0,1,2]
+  description: string;
   createdAt: Date;
   updatedAt: Date;  
 }
@@ -14,13 +15,22 @@ const routePermissionSchema: Schema<RoutePermissionDocument> = new Schema<RouteP
     type: String,
     required: true
   },
+  method: {
+    type: String,
+    enum: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS', 'HEAD'],
+    required: true
+  },
   roles: {
     type: Number,
     required: true
   },
-  permission: {
-    type: Number,
+  permissions: {
+    type: [Number],
     required: true
+  },
+  description: {
+    type: String,
+    required: true  
   },
   createdAt: {
     type: Date,
