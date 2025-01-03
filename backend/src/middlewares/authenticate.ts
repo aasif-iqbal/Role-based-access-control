@@ -7,15 +7,21 @@ const Auth = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
   try {  
       const token: any | undefined = req.headers['authorization']?.split(' ')[1] || req.cookies.token;
       
+      // console.log('Headers:', req.headers);
+      // console.log('Body:', req.body);
+      // console.log('Cookies:', req.cookies);
+
       // console.log('Authorization:',token);
       const decodedToken = verifyAuthToken(token as any);
       
       if (!token) {
-        return res.status(401).json({ message: 'Unauthorized' });
+        res.status(401).json({ message: 'Unauthorized' });
+        return; 
       } 
             
       if (!decodedToken) {
-        return res.status(403).json({ message: 'Forbidden' });
+        res.status(403).json({ message: 'Forbidden' });
+        return; 
       }       
       
       req.user = decodedToken as any;

@@ -3,7 +3,8 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 interface RoutePermissionDocument extends Document {
   router_endpoint: string;
   method: string;
-  roles: number;            // 0-admin, 1-subadmin, 2-editor, 3-User   
+  role: mongoose.Schema.Types.ObjectId; // ref: 'Role'
+  permission_id: mongoose.Schema.Types.ObjectId;
   permissions: Array<number>; //[0,1,2]
   description: string;
   createdAt: Date;
@@ -13,17 +14,23 @@ interface RoutePermissionDocument extends Document {
 const routePermissionSchema: Schema<RoutePermissionDocument> = new Schema<RoutePermissionDocument>({
   router_endpoint: {
     type: String,
-    required: true
+    required: true      // '/v1/posts'
   },
   method: {
     type: String,
     enum: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS', 'HEAD'],
     required: true
   },
-  roles: {
-    type: Number,
-    required: true
+  role: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Role', 
+    required: true,
   },
+  permission_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Permission',
+    required: true
+  },  
   permissions: {
     type: [Number],
     required: true
@@ -41,5 +48,8 @@ const routePermissionSchema: Schema<RoutePermissionDocument> = new Schema<RouteP
     default: Date.now
   }
 });
+
+// Add a unique index to ensure the combination of role, route, and method is unique
+routePermissionSchema.index({ role: 1, route: 1, method: 1 }, { unique: true });
 
 export const routePermissionModel: Model<RoutePermissionDocument> = mongoose.model<RoutePermissionDocument>('RoutePermission', routePermissionSchema);  

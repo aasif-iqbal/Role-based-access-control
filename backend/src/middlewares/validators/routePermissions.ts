@@ -4,7 +4,22 @@ import { Request, Response, NextFunction } from "express";
 const routePermissionSchema = Joi.object({
   router_endpoint: Joi.string().min(3).max(30).required(),
   method: Joi.string().min(3).max(30).required(),
-  roles: Joi.number().required(),
+  role: Joi.string()
+    .regex(/^[0-9a-fA-F]{24}$/) // Matches a valid MongoDB ObjectId
+    .required()
+    .messages({
+      'string.pattern.base': 'Role must be a valid MongoDB ObjectId.',
+      'string.empty': 'Role is required.',
+      'any.required': 'Role is required.',
+    }),
+  permission_id: Joi.string()
+    .regex(/^[0-9a-fA-F]{24}$/) // Matches a valid MongoDB ObjectId
+    .required()
+    .messages({
+      'string.pattern.base': 'Permission ID must be a valid MongoDB ObjectId.',
+      'string.empty': 'Permission ID is required.',
+      'any.required': 'Permission ID is required.', 
+    }),
   permissions: Joi.array().required(),
   description: Joi.string().min(5).max(100).required()
 }); 
