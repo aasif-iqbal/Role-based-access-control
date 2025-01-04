@@ -94,3 +94,96 @@ app.get('/users/:id', (req, res) => {
 ### **Best Practices**
 - Use **route parameters** (`params`) for mandatory data required to identify a resource.
 - Use **query parameters** for optional data such as filters, sorts, and limits.
+
+
+## What is diff between create() and save()?
+
+In Mongoose, both `save()` and `create()` are used to persist data to the database, but they have distinct use cases and differences in behavior:
+
+---
+
+### **`save()`**
+1. **Purpose**: Used to save or update an instance of a Mongoose model.
+2. **Workflow**:
+   - You first create a document (instance of the model) using `new Model()`.
+   - Then, you call `.save()` on that instance.
+   - Example:
+     ```javascript
+     const user = new User({ name: 'Alice', age: 25 });
+     user.save()
+       .then(doc => console.log(doc))
+       .catch(err => console.error(err));
+     ```
+
+3. **Validation**:
+   - Triggers Mongoose schema validations before saving.
+   - Custom `pre` and `post` hooks associated with the `save()` method are executed.
+
+4. **Use Case**:
+   - When you need to save a document after modifying it.
+   - When you want fine-grained control over creating and saving the document separately.
+
+5. **Updating a Document**:
+   - If the document already exists (has an `_id`), calling `save()` updates it in the database instead of creating a new one.
+
+---
+
+### **`create()`**
+1. **Purpose**: A convenience method to create and save a new document in one step.
+2. **Workflow**:
+   - You pass an object (or array of objects) to `Model.create()`.
+   - Mongoose internally creates the document(s), saves them, and returns the saved document(s).
+   - Example:
+     ```javascript
+     User.create({ name: 'Alice', age: 25 })
+       .then(doc => console.log(doc))
+       .catch(err => console.error(err));
+     ```
+
+3. **Validation**:
+   - Triggers Mongoose schema validations before saving.
+   - Custom `pre` and `post` hooks for `create()` are executed.
+
+4. **Use Case**:
+   - When you only need to create and save a document in a single step.
+   - Simplifies the code for creating new documents.
+
+5. **Batch Insert**:
+   - You can create multiple documents at once:
+     ```javascript
+     User.create([{ name: 'Alice' }, { name: 'Bob' }])
+       .then(docs => console.log(docs))
+       .catch(err => console.error(err));
+     ```
+
+---
+
+### Key Differences:
+| Feature                | `save()`                                         | `create()`                                     |
+|------------------------|------------------------------------------------|-----------------------------------------------|
+| **Method Type**         | Called on a document instance.                  | Called directly on the model.                 |
+| **Workflow**            | Create the document, then call `save()`.         | Creates and saves in a single step.           |
+| **Use Case**            | Modify or update an existing document.          | Quickly create and save a new document.       |
+| **Multiple Documents**  | Can only save one document at a time.           | Can create and save multiple documents.       |
+| **Hooks**               | Triggers `save` hooks.                          | Triggers `insertMany` hooks when batching.    |
+
+---
+
+### Example Scenario:
+1. **When to use `save()`**:
+   ```javascript
+   const user = new User({ name: 'Alice', age: 25 });
+   user.age = 30; // Modify the document.
+   user.save()
+     .then(updatedUser => console.log(updatedUser))
+     .catch(err => console.error(err));
+   ```
+
+2. **When to use `create()`**:
+   ```javascript
+   User.create({ name: 'Alice', age: 25 })
+     .then(newUser => console.log(newUser))
+     .catch(err => console.error(err));
+   ```
+
+Choose the method based on the requirement: If you're directly inserting data, use `create()`. If you're working with an existing document or want more granular control, use `save()`.

@@ -6,7 +6,7 @@ interface PermissionDocument extends Document {
   permission_name: string;
   permissions: number[];
   description: string;
-  is_default: boolean;   // default_permission
+  is_default: number;   // default_permission
   createdAt: Date;
   updatedAt: Date;
 }
@@ -23,9 +23,13 @@ const PermissionSchema: Schema<PermissionDocument> = new Schema<PermissionDocume
     enum: [0, 1, 2, 3], // Valid permission values: 0 = Create, 1 = Read, 2 = Update, 3 = Delete
     default: [1], // Default to Read permission if not specified
   },
+  description: {
+    type: String,
+    required: true
+  },
   is_default: {
-    type: Boolean,
-    default: false, //false->user not able to access this permission, true->user can access this permission
+    type: Number,
+    default: 0, //false->user not able to access this permission, true->user can access this permission
   },
   createdAt: {
     type: Date,

@@ -3,15 +3,16 @@ import { createRoles, getRoles, deleteRole, updateRole } from "../controllers/ro
 import { validateRole } from "../middlewares/validators/role";
 import onlyAdminAccess from "../middlewares/onlyAdminAccess";
 import Auth from "../middlewares/authenticate";
+import checkPermission from "../middlewares/checkPermission";
 
 const router = express.Router();
 
-router.post("/", onlyAdminAccess, validateRole, createRoles); // POST /v1/role
+router.post("/", Auth, onlyAdminAccess, validateRole, createRoles); // POST /v1/role
 
-router.get("/", onlyAdminAccess, validateRole, getRoles); // GET /v1/roles
+router.get("/", Auth, checkPermission, getRoles); // GET /v1/role
 
-router.patch("/:id", onlyAdminAccess, validateRole, updateRole); // PATCH /v1/role/:id
+router.patch("/:id", Auth, onlyAdminAccess, validateRole, updateRole); // PATCH /v1/role/:id
 
-router.delete("/:id", onlyAdminAccess, validateRole, deleteRole); // DELETE /v1/roles/:id
+router.delete("/:id", Auth, onlyAdminAccess, deleteRole); // DELETE /v1/roles/:id
 
 export default router;

@@ -50,6 +50,11 @@ const routePermissionSchema: Schema<RoutePermissionDocument> = new Schema<RouteP
 });
 
 // Add a unique index to ensure the combination of role, route, and method is unique
-routePermissionSchema.index({ role: 1, route: 1, method: 1 }, { unique: true });
+//Sparse Index: A sparse index ignores documents where the indexed field is null
+
+routePermissionSchema.index({ role: 1, router_endpoint: 1, method: 1 }, { unique: true });// {sparse: true});
+
+
+
 
 export const routePermissionModel: Model<RoutePermissionDocument> = mongoose.model<RoutePermissionDocument>('RoutePermission', routePermissionSchema);  

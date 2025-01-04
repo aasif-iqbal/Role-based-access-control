@@ -48,7 +48,7 @@ POST | localhost:3000/v1/route-permissions/add
 const addRoutePermission = async (req: Request, res: Response): Promise<void> => {
   try {
     const { router_endpoint, method, role, permission_id, permissions, description } = req.body;
-
+    console.log('req.body',req.body);
     // check for unique router_endpoint and method combination {"/v1/user", "GET"} & {"/v1/user", "POST"}
 
     const existingRoutePermission = await routePermissionModel.findOne({ router_endpoint, method });
@@ -56,7 +56,7 @@ const addRoutePermission = async (req: Request, res: Response): Promise<void> =>
     if (!existingRoutePermission) {
       // create
       const routePermission: any = await routePermissionModel.create(req.body);
-       
+
       const response: ReturnResponse = {
         status: "success",
         message: "Route permission added successfully",

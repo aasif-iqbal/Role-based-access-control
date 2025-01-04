@@ -8,9 +8,9 @@ const routePermissionSchema = Joi.object({
     .regex(/^[0-9a-fA-F]{24}$/) // Matches a valid MongoDB ObjectId
     .required()
     .messages({
-      'string.pattern.base': 'Role must be a valid MongoDB ObjectId.',
-      'string.empty': 'Role is required.',
-      'any.required': 'Role is required.',
+      "string.pattern.base": "ID must be a valid MongoDB ObjectId.",
+      "string.empty": "ID is required.",
+      "any.required": "ID is required."
     }),
   permission_id: Joi.string()
     .regex(/^[0-9a-fA-F]{24}$/) // Matches a valid MongoDB ObjectId

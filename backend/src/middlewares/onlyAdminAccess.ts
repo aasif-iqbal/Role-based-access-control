@@ -1,19 +1,27 @@
 import { Request, Response, NextFunction } from 'express';
 import { AuthenticatedRequest } from '../types/authenticated-request';
+import { ReturnResponse } from '../utils/interfaces';
 
-const onlyAdminAccess = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {  
+const onlyAdminAccess = (req: AuthenticatedRequest, res: Response, next: NextFunction): void => {  
   try {
     console.log('onlyAdminAccess middleware', req.user?.role);
-    if (req.user?.role !== 1) { // 1->Admin 
-      return res.status(403).json({ message: 'Forbidden' });
+    if (req.user?.role !== 1) { // 1->Admin
+      const response: ReturnResponse = {
+          status: "error",
+          message: "Forbidden",
+          data: []
+      } 
+      res.status(403).json(response);
+      return; 
     }
     next();
 
   } catch (error) {
-    console.error('Error in onlyAdminAccess middleware:', error);
+    // console.error('Error in onlyAdminAccess middleware:', error);
     // Ensure only one response is sent
     if (!res.headersSent) {
-      return res.status(500).json({ message: 'Internal server error.' });
+      res.status(500).json({ message: 'Internal server error.' });
+      return; 
     }
   }  
 };

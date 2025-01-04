@@ -13,7 +13,11 @@ TODO:
 12. Add permission to get & create user api - [Done]
 13. Update permission
 14. Get all routes endpoints - [Done]
-15. Create & Update RouterPermissions Api -
+15. Create & Update RouterPermissions Api - [Done]
+16. Get RouterPermissions Api By Endpoint & Method - [Done]
+17. Create Helper method(to find user permission) - [Done]
+18. Reset RouterPermissions Api - 
+19. Create Middleware to check user permission - 
 
 
 ## What i learn

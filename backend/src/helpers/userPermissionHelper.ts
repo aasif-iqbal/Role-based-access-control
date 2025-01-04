@@ -1,6 +1,5 @@
-import mongoose, { ObjectId } from 'mongoose';
+import mongoose, { Schema, ObjectId } from 'mongoose';
 import {userModel} from '../models/users';
-import { permission } from 'process';
 
 const userPermissionHelper = async(user_id: any): Promise<any> => {
 

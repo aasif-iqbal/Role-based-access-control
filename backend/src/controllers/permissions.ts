@@ -3,7 +3,10 @@ import { ReturnResponse } from "../utils/interfaces";
 import { permissionModel } from "../models/permissions";
 const createPermission = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { permission_name } = req.body;   
+        const { permission_name, 
+                permissions, 
+                description, 
+                is_default } = req.body;   
 
         const existingPermission = await permissionModel.findOne({ permission_name });
         
@@ -18,9 +21,9 @@ const createPermission = async (req: Request, res: Response): Promise<void> => {
             return;
         }
         
-        // for default permission - By default it set to 0
-        if(req.body.default){            
-            const is_default = req.body.default;  
+        // for default permission - By default it set to 0 
+        if(req.body.is_default){            
+            const is_default = req.body.is_default;  
             await permissionModel.updateOne({ is_default: 0 }, { $set: { is_default: 1 } });                 
         }
 
@@ -35,9 +38,9 @@ const createPermission = async (req: Request, res: Response): Promise<void> => {
         res.status(201).json(response);
         return;
 
-    } catch (error) {
+    } catch (error: any) {
         console.log(error);
-        throw error;
+        throw new Error(error);
     }
 }
 
