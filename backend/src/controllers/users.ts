@@ -258,7 +258,7 @@ const createUser = async (req: AuthenticatedRequest, res: Response): Promise<voi
     const permissions = req.body.permissions;
   
     console.log('permissions', permissions);
-   
+  
     await Promise.all(
       permissions.map(async (permission: any) => {
           console.log('permission-map', permission);

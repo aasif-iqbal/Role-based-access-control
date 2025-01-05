@@ -6,7 +6,7 @@ interface UserDocument extends Document {
     email: string;
     password: string;
     role: number;
-    // role: Array<number>; //[0,1,2]    
+    // role: Array<number>; //[0,1,2]    if single user have multiple role
     createdAt: Date;
     updatedAt: Date;
 }

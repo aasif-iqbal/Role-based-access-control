@@ -6,8 +6,9 @@ import onlyAdminAccess from "../middlewares/onlyAdminAccess";
 
 const router = express.Router();
 
-router.get("/routes", Auth, onlyAdminAccess, getAllRoutes);  //v1/route-permissions/routes
-router.post("/add", Auth, onlyAdminAccess, validateRoutePermission, addRoutePermission);  //v1/route-permissions/add
+router.get("/route", Auth, onlyAdminAccess, getAllRoutes);  //v1/route-permissions/route
+router.post("/route", Auth, onlyAdminAccess, validateRoutePermission, addRoutePermission);  //v1/route-permissions/route
+
 router.get("/", Auth, onlyAdminAccess, getRoutePermissions); //v1/route-permissions/endpoint
 
 

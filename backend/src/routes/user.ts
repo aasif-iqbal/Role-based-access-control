@@ -7,14 +7,18 @@ import Auth from "../middlewares/authenticate";
 
 const router = express.Router();
 
-router.post("/registration", validateUser, registration); // POST /v1/user/registration
-router.post("/login", validateLogin, login); // POST /v1/user/login
-router.post("/", Auth, onlyAdminAccess, validateUser, createUser); // POST /v1/user
-router.get("/", Auth, onlyAdminAccess, getAllUsers); // GET /v1/users
-router.get("/:id", Auth, onlyAdminAccess, getProfile); // GET /v1/user/:id
+router.post("/register", validateUser, registration); // POST /v1/users/register
 
-// localhost:3000/v1/user/6763433e75c6d53e4da121b6
-router.patch("/:id", Auth, onlyAdminAccess, validateUser, updateUser); // PATCH /v1/user/
-router.delete("/:id", Auth, onlyAdminAccess, validateUser, deleteUser); // DELETE /v1/user
+router.post("/login", validateLogin, login); // POST /v1/users/login
+
+router.post("/", Auth, onlyAdminAccess, validateUser, createUser); // POST /v1/users
+
+router.get("/", Auth, onlyAdminAccess, getAllUsers); // GET /v1/users
+
+router.get("/:id", Auth, onlyAdminAccess, getProfile); // GET /v1/users/:id
+
+// localhost:3000/v1/users/6763433e75c6d53e4da121b6
+router.patch("/:id", Auth, onlyAdminAccess, validateUser, updateUser); // PATCH /v1/users/
+router.delete("/:id", Auth, onlyAdminAccess, validateUser, deleteUser); // DELETE /v1/users
 
 export default router;

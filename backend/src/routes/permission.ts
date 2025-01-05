@@ -9,21 +9,13 @@ import {
   deletePermission 
 } from "../controllers/permissions";
 
-// import  { Application } from 'express';
-// const app: Application = express();
 const router = express.Router();
 
-// import { getRoutes } from '../utils/getRoutes';
+router.post("/", Auth, onlyAdminAccess, validatePermission, createPermission); // POST /v1/permissions
+router.get("/", Auth, onlyAdminAccess, validatePermission, getPermissions); // POST /v1/permissions
+router.patch("/:id", Auth, onlyAdminAccess, validatePermission, updatePermission); // POST /v1/permissions/6773fa0462c39d1dea26da27
 
-router.post("/", Auth, onlyAdminAccess, validatePermission, createPermission); // POST /v1/permission
-router.get("/", Auth, onlyAdminAccess, validatePermission, getPermissions); // POST /v1/permission
-router.patch("/:id", Auth, onlyAdminAccess, validatePermission, updatePermission); // POST /v1/permission
-
-//Method:DELETE | localhost:3000/v1/permission/12345
 router.delete("/:id", Auth, onlyAdminAccess, validatePermission, deletePermission);
-
-// console.log('Registered Routes:');
-
-// console.log(getRoutes(app));
+//v1/permission/6773fa0462c39d1dea26da27
 
 export default router;

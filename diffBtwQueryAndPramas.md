@@ -187,3 +187,60 @@ In Mongoose, both `save()` and `create()` are used to persist data to the databa
    ```
 
 Choose the method based on the requirement: If you're directly inserting data, use `create()`. If you're working with an existing document or want more granular control, use `save()`.
+
+
+## Singleton pattern
+
+
+
+The provided code does not fully implement a **singleton pattern**. While it ensures that you only create a single connection when the `db_connection` function is invoked, it does not enforce that subsequent calls reuse the same connection object. A proper singleton ensures that only one instance is created and reused throughout the application.
+
+### What this code does:
+1. Attempts to connect to a MongoDB database.
+2. Returns the connection instance if successful.
+3. Logs errors if the connection fails.
+
+However, every time `db_connection` is called, it creates a new connection to the database unless `mongoose.connect` internally caches the connection (which it does by default in Mongoose). This means that while Mongoose itself handles connection reuse, your function does not explicitly enforce a singleton behavior.
+
+### To make it a proper singleton:
+You can store the connection instance in a variable and check if it already exists before creating a new connection.
+
+Here’s a modified version to implement the singleton pattern:
+
+```javascript
+import mongoose from "mongoose";
+
+let connection: typeof mongoose | null = null;
+
+const db_connection = async (): Promise<typeof mongoose | void> => {
+    if (connection) {
+        console.log('Reusing existing database connection');
+        return connection;
+    }
+
+    try {
+        const localConnectionString = `${process.env.MONGO_URI}`;
+        connection = await mongoose.connect(localConnectionString);
+
+        console.log('Database connected successfully');
+        return connection;
+    } catch (err) {
+        console.error('Database connection failed:', err);
+        throw err; // Rethrow error for better error handling
+    }
+};
+
+export default db_connection;
+```
+
+### Key Points:
+1. **Singleton Variable**: `let connection` stores the single instance of the connection.
+2. **Reuse**: The function checks if `connection` is already initialized and reuses it if available.
+3. **Error Handling**: Throws an error if the connection fails for better visibility in the application.
+
+### Why Use a Singleton for Database Connections?
+- **Efficiency**: Reusing the same connection avoids unnecessary overhead of opening multiple connections.
+- **Consistency**: Ensures all parts of your application use the same connection instance.
+- **Scalability**: Helps to manage limited resources (e.g., maximum concurrent connections). 
+
+This modified implementation is a proper singleton.
