@@ -4,9 +4,10 @@ import { likeModel } from "../models/likes";
 
 const postLike = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { userId, postId } = req.body;
+    const { postId } = req.body;
+    const user_id = req.user?._id;
     
-    const isLiked = await likeModel.findOne({ userId, postId });
+    const isLiked = await likeModel.findOne({ userId: user_id, postId });
 
     if(isLiked){
         const response: ReturnResponse = {
@@ -28,7 +29,7 @@ const postLike = async (req: Request, res: Response): Promise<void> => {
         }
 
         res.status(200).json(response);
-    } 
+      } 
     }
   } catch (error) {
     // console.error(error);

@@ -3,9 +3,9 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 interface RoutePermissionDocument extends Document {
   router_endpoint: string;
   method: string;
-  role: mongoose.Schema.Types.ObjectId; // ref: 'Role'
+  role: mongoose.Schema.Types.ObjectId; 
   permission_id: mongoose.Schema.Types.ObjectId;
-  permissions: Array<number>; //[0,1,2]
+  permissions: Array<number>; //[0,1,2,3]
   description: string;
   createdAt: Date;
   updatedAt: Date;  
@@ -32,7 +32,7 @@ const routePermissionSchema: Schema<RoutePermissionDocument> = new Schema<RouteP
     required: true
   },  
   permissions: {
-    type: [Number],
+    type: [Number], 
     required: true
   },
   description: {

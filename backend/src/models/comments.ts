@@ -1,8 +1,8 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
 interface CommentDocument extends Document {
-  user_id:any;
-  post_id: any;  
+  user_id: mongoose.Types.ObjectId;
+  post_id: mongoose.Types.ObjectId;  
   comment: string;
   createdAt: Date;
   updatedAt: Date;

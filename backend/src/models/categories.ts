@@ -1,6 +1,5 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
-
 // Define the interface for the document
  interface CategoryDocument extends Document {
     category_name: string;

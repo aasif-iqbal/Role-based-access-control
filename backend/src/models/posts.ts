@@ -3,8 +3,8 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 interface PostDocument extends Document { 
   title: string;
   description: string;
-  category: any;
-  author: string;
+  category: mongoose.Schema.Types.ObjectId;
+  author: mongoose.Schema.Types.ObjectId; 
   createdAt: Date;
   updatedAt: Date;
 } 
@@ -24,8 +24,9 @@ const postSchema: Schema<PostDocument> = new Schema<PostDocument>({
     ref: 'Category'
   },
   author: {
-    type: String,
-    required: true
+    type: Schema.Types.ObjectId,
+    required: true,
+    ref: 'User'
   },
   createdAt: {
     type: Date,
