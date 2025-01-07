@@ -5,6 +5,7 @@ import { ReturnResponse } from "../utils/interfaces";
 
 const getUserPermission = async (req: Request, res: Response): Promise<void> => {
   
+  try {  
     const user_id = req.params.user_id;
   
     const user = await userPermissionHelper(user_id);
@@ -16,8 +17,15 @@ const getUserPermission = async (req: Request, res: Response): Promise<void> => 
     }
   
     res.status(200).json(response);
+    } catch (error) {
+    res.status(500).json({ error: "Something went wrong" });
   }
+}
 
-  export {
+// User permissions will add by admin on user-update endpoint
+
+// PATCH | localhost:3000/v1/user/6763433e75c6d53e4da121b6
+
+export {
     getUserPermission
   }

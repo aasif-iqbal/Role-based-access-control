@@ -1,13 +1,14 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
 type Permission = {
+  id: mongoose.Schema.Types.ObjectId;
   permission_name: string; // Name of the permission
   permission_value: number[]; // Array of permission codes
 };
 // Define the interface for the document
 interface UserPermissionDocument extends Document {
   user_id: mongoose.Schema.Types.ObjectId;
-  permissions: Permission[];  
+  permissions: Permission[];  // Array of multiple permissions
   createdAt: Date;
   updatedAt: Date;
 }
@@ -20,9 +21,10 @@ const UserPermissionSchema: Schema<UserPermissionDocument> = new Schema<UserPerm
     ref: 'User' 
   },
   permissions: [{
+    id: mongoose.Schema.Types.ObjectId,
     permission_name: String,
     permission_value: [Number] // 0->Create, 1->Read, 2->Update, 3->Delete
-  }],   
+  }], 
   createdAt: {
     type: Date,
     default: Date.now
@@ -34,24 +36,3 @@ const UserPermissionSchema: Schema<UserPermissionDocument> = new Schema<UserPerm
 });   
 
 export const userPermissionModel: Model<UserPermissionDocument> = mongoose.model<UserPermissionDocument>('UserPermission', UserPermissionSchema); 
-
-
-/*
-
-permissions: [
-  {
-    permission_name: 'user',
-    permission_value: [0, 1, 2, 3] // 0->Create, 1->Read, 2->Update, 3->Delete
-  },
-  {
-    permission_name: 'post',
-    permission_value: [0, 1, 2] // 0->Create, 1->Read, 2->Update, 3->Delete
-  },
-  {
-    permission_name: 'comment',
-    permission_value: [0, 1, 2] // 0->Create, 1->Read, 2->Update, 3->Delete
-  }
-]
-
-
- */ 

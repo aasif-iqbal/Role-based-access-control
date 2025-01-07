@@ -6,9 +6,9 @@ const routePermissionHelper = async(router_endpoint: string, method: string, rol
   try {
     
     const routerPermissions = await routePermissionModel.findOne({ router_endpoint, method, role }).populate("permission_id");
-
+console.log('routerPermissions',routerPermissions);
     if(!routerPermissions){
-      throw new Error("Route permissions not found");
+      throw new Error(`Route permissions not found for route: ${router_endpoint} and method: ${method}`);
       return;
     }
     return routerPermissions;

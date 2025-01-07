@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { ReturnResponse } from "../utils/interfaces";
 import { likeModel } from "../models/likes";
+import { AuthenticatedRequest } from "../types/authenticated-request";
 
-const postLike = async (req: Request, res: Response): Promise<void> => {
+const postLike = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
     const { postId } = req.body;
     const user_id = req.user?._id;

@@ -11,5 +11,4 @@ router.post("/", Auth, onlyAdminAccess, validatePost, createPost); // POST /v1/p
 
 router.get("/", Auth, checkPermission, getPosts); // GET /v1/posts
 
-
 export default router;

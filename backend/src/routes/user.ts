@@ -4,6 +4,8 @@ import { validateUser } from "../middlewares/validators/user";
 import { validateLogin } from "../middlewares/validators/login";
 import onlyAdminAccess from "../middlewares/onlyAdminAccess";
 import Auth from "../middlewares/authenticate";
+import checkPermission from "../middlewares/checkPermission";
+import { validateUserPermission } from "../middlewares/validators/userPermission";
 
 const router = express.Router();
 

@@ -30,8 +30,7 @@ userPermission-- {
 const checkPermission = async(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
 
   try {
-    // console.log('checkPermission middleware', req.user?.role);
-    
+    // console.log('checkPermission middleware', req.user?.role);    
     // if user is not admin
     if (req.user?.role !== 1) { // 1->Admin
       const roleID = await roleModel.findOne({ value: req.user?.role });
@@ -42,7 +41,7 @@ const checkPermission = async(req: AuthenticatedRequest, res: Response, next: Ne
      // check if user has permission to access this route
       const routePermission = await routePermissionHelper(req.originalUrl, req.method, roleID?._id);
 
-      if (!routePermission) {
+      if (!routePermission || routePermission == null) {
         const response: ReturnResponse = {
             status: "error",
             message: "Forbidden",
@@ -91,19 +90,10 @@ const checkPermission = async(req: AuthenticatedRequest, res: Response, next: Ne
         } 
         res.status(403).json(response);
         return;
-      }
-    
-      
-    
-      console.log('1.userPermission--', userPermissions);    
-      
+      }        
+      console.log('1.userPermission--', userPermissions);          
       console.log('2. routePermission--', routePermission);
-
-      
     }
-
-    
-
     next(); 
   }catch (error) {
     console.error('Error in checkPermission middleware:', error);

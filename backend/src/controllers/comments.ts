@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import { ReturnResponse } from "../utils/interfaces";
 import { commentModel } from "../models/comments";
+import { AuthenticatedRequest } from "../types/authenticated-request";
 
 const getComments = async (req: Request, res: Response): Promise<void> => {}
-const createComment = async (req: Request, res: Response): Promise<void> => {
+const createComment = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
     const { post_id, comment } = req.body;
 

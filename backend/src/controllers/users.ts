@@ -341,7 +341,9 @@ const updateUser = async (req: Request, res: Response): Promise<void> => {
   
       await Promise.all(
         permissions.map(async (permission: any) => {
-          console.log('permission-map', permission);
+          
+        console.log('permission-map', permission);
+
         const permissionData = await permissionModel.findOne({ _id: permission.id }) as any;
 
         if (!permissionData) {
@@ -352,17 +354,54 @@ const updateUser = async (req: Request, res: Response): Promise<void> => {
       
         permissionArray.push({
           permission_name: permissionData?.permission_name,
-          permission_value: permission?.value
+          permission_value: permission?.permission_value
         });
       })      
   );  
-  // update user permissions
+  
+
+  // if same user is updating his permissions again then update 
+  const isUserPermissionExists = await userPermissionModel.findOne({ user_id: user?._id });
+
+  if(isUserPermissionExists){
+    // update
+    const updatedUserPermission: any = await userPermissionModel.findOneAndUpdate({ user_id: user?._id }, {
+      user_id: user?._id,
+      permissions: permissionArray
+    });
+    
+    const response: ReturnResponse = {
+      status: "success",
+      message: "User Permissions Updated successfully",
+      data: updatedUserPermission
+    }
+    
+    res.status(201).json(response);
+    return;
+  }else{
+    // update user permissions
   const userPermission: any = new userPermissionModel({
     user_id: user?._id,
     permissions: permissionArray
   })
 
-  await userPermission.save(); 
+    const updatedUserPermission: any = await userPermission.save();
+
+    if(userPermission){
+
+      const response: ReturnResponse = {
+        status: "success",
+        message: "User Permissions Created successfully",
+        data: updatedUserPermission
+      }
+
+      res.status(201).json(response); 
+      return;
+    }
+  }
+  
+
+
   }
 
     const response: ReturnResponse = {
@@ -377,6 +416,7 @@ const updateUser = async (req: Request, res: Response): Promise<void> => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Internal server error' });
+    return;
   }
 } 
 
