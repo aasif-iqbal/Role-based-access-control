@@ -9,10 +9,17 @@ const getAllRoutes = async (req: Request, res: Response): Promise<void> => {
   try {  
     const allRoutes:Endpoint[] = endpoints;
 
+    const filteredRoutes:any[] = allRoutes.map(route => {
+      return {
+        path: route.path,
+        method: route.methods
+      }
+    });
+    
     const response: ReturnResponse = {
       status: "success",
       message: "All routes",
-      data: allRoutes 
+      data: filteredRoutes 
     }
 
     res.status(200).json(response);

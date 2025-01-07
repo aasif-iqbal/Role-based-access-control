@@ -17,8 +17,9 @@ TODO:
 16. Get RouterPermissions Api By Endpoint & Method - [Done]
 17. Create Helper method(to find user permission) - [Done]
 18. Reset RouterPermissions Api - 
-19. Create Middleware to check user permission - 
+19. Create Middleware to check user permission - [Done]
 
+- checkPermisson middleware is for only Sub-admin & Editor
 
 ## What i learn
 - Is it correct Promise<void> for  api development

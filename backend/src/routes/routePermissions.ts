@@ -9,7 +9,7 @@ const router = express.Router();
 router.get("/route", Auth, onlyAdminAccess, getAllRoutes);  //v1/route-permissions/route
 router.post("/route", Auth, onlyAdminAccess, validateRoutePermission, addRoutePermission);  //v1/route-permissions/route
 
-router.get("/", Auth, onlyAdminAccess, getRoutePermissions); //v1/route-permissions/endpoint
+router.get("/", Auth, onlyAdminAccess, getRoutePermissions); //v1/route-permissions
 
 
 export default router;

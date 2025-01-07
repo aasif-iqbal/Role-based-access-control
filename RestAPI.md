@@ -311,4 +311,166 @@ Response
 }
 ```
 
+## To Get All Routes
+GET | localhost:3000/v1/route-permissions/route
 
+Response
+```json
+{
+    "status": "success",
+    "message": "All routes",
+    "data": [
+        {
+            "path": "/",
+            "method": [
+                "GET"
+            ]
+        },
+        {
+            "path": "/v1/users/register",
+            "method": [
+                "POST"
+            ]
+        },
+        {
+            "path": "/v1/users/login",
+            "method": [
+                "POST"
+            ]
+        },
+        {
+            "path": "/v1/users",
+            "method": [
+                "POST",
+                "GET"
+            ]
+        },
+        {
+            "path": "/v1/users/:id",
+            "method": [
+                "GET",
+                "PATCH",
+                "DELETE"
+            ]
+        },
+        {
+            "path": "/v1/roles",
+            "method": [
+                "POST",
+                "GET"
+            ]
+        },
+        {
+            "path": "/v1/roles/:id",
+            "method": [
+                "PATCH",
+                "DELETE"
+            ]
+        },
+        {
+            "path": "/v1/permissions",
+            "method": [
+                "POST",
+                "GET"
+            ]
+        },
+        {
+            "path": "/v1/permissions/:id",
+            "method": [
+                "PATCH",
+                "DELETE"
+            ]
+        },
+        {
+            "path": "/v1/posts",
+            "method": [
+                "POST",
+                "GET"
+            ]
+        },
+        {
+            "path": "/v1/categories",
+            "method": [
+                "POST",
+                "GET"
+            ]
+        },
+        {
+            "path": "/v1/comments",
+            "method": [
+                "POST",
+                "GET"
+            ]
+        },
+        {
+            "path": "/v1/likes",
+            "method": [
+                "POST",
+                "GET"
+            ]
+        },
+        {
+            "path": "/v1/route-permissions/route",
+            "method": [
+                "GET",
+                "POST"
+            ]
+        },
+        {
+            "path": "/v1/route-permissions",
+            "method": [
+                "GET"
+            ]
+        },
+        {
+            "path": "/v1/user-permissions/:user_id",
+            "method": [
+                "GET"
+            ]
+        }
+    ]
+}
+```
+
+
+## To Set Routes Permisson
+ - When Admin Give Access route `v1/` To Sub-admin 
+
+POST | localhost:3000/v1/route-permissions/route
+
+Request
+```json
+{
+    "router_endpoint":"/v1/categories",
+    "method":"POST",
+    "role":"67790f808993deee36e021ae",
+    "permission_id":"677d9f521f4b7fa69468cbf8",
+    "permissions":[0,1,2,3],
+    "description":"Grant Permissions to Sub-Admin to Create, Read, Edit & Delete category"
+}
+```
+
+Response
+```json
+{
+    "status": "success",
+    "message": "Route permission added successfully",
+    "data": {
+        "router_endpoint": "/v1/categories",
+        "method": "POST",
+        "role": "67790f808993deee36e021ae",
+        "permission_id": "677d9f521f4b7fa69468cbf8",
+        "permissions": [
+            0,
+            1,
+            2,
+            3
+        ],
+        "description": "Grant Permissions to Sub-Admin to Create, Read, Edit & Delete category",
+        "_id": "677da0331f4b7fa69468cbfb",
+        "createdAt": "2025-01-07T21:44:19.452Z",
+        "updatedAt": "2025-01-07T21:44:19.452Z",
+        "__v": 0
+    }
+}
+```
