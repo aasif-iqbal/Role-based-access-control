@@ -49,7 +49,7 @@ const getPermissions = async (req: Request, res: Response): Promise<void> => {}
 const updatePermission = async (req: Request, res: Response): Promise<void> => {}
 
 const deletePermission = async (req: Request, res: Response): Promise<void> => {
-    console.log('Id:',req.params.id);
+    console.log('Id:', req.params.id);
 }
 
 

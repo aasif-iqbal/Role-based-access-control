@@ -1,12 +1,18 @@
 ## User-Registration
 
+```
 POST | localhost:3000/v1/users/register
+```
+Request
+```json
 {
 	"name": "Mahesh",
     "email":"Mahesh123@gmail.com",
     "password":"12345"
 }
-
+```
+Response
+```json
 {
     "status": "success",
     "message": "User created successfully",
@@ -21,21 +27,24 @@ POST | localhost:3000/v1/users/register
         "__v": 0
     }
 }
-
+```
 ----
 
 ## Login
-
+```
 POST | localhost:3000/v1/users/login
-
+```
 Request
+```json
 {
     "email":"Mahesh123@gmail.com", // normal user
     // "email":"aasif@x.com",  // admin
     "password":"12345"
 }
+```
 
 Response
+```json
 {
     "status": "success",
     "message": "User logged in successfully",
@@ -49,22 +58,29 @@ Response
         }
     ]
 }
+```
 ---------
 
+## Create Roles
+```
 POST | localhost:3000/v1/roles
+```
 
 Authorization 
 Auth Type : Bearer Token | <JWT-Token>
 
 Request
+
+```json
 {
     "role_name":"Editor", 
     "value":3, 
     "description":"Editor"
 }
+```
 
 Response
-
+```json
 {
     "status": "success",
     "message": "Role created successfully",
@@ -78,15 +94,17 @@ Response
         "__v": 0
     }
 }
-
+```
 
 ## Get all roles
+```
 GET | localhost:3000/v1/roles
-
+```
 Authorization 
 Auth Type : Bearer Token | <JWT-Token>
 
 Response
+
 ```json
 {
     "status": "success",
@@ -133,8 +151,9 @@ Response
 ```
 
 ## create Permissions
+```
 POST |  localhost:3000/v1/permissions
-
+```
 Request
 ```json
 {
@@ -167,9 +186,9 @@ Response
 
 
 ## Create categories
-
+```
 POST | localhost:3000/v1/categories
-
+```
 ```json
 {
     "category_name":"sports",
@@ -193,9 +212,9 @@ POST | localhost:3000/v1/categories
 ```
 
 ## Create Posts
-
+```
 POST | localhost:3000/v1/posts
-
+```
 ```json
 {
     "title":"TypeScript and OOP",
@@ -224,9 +243,9 @@ Response
 
 ## Update User & User Permissions 
 - when user permission created first time
-
+```
 PATCH | localhost:3000/v1/users/6763433e75c6d53e4da121b6
-
+```
 Request 
 ```json
 {
@@ -312,8 +331,9 @@ Response
 ```
 
 ## To Get All Routes
+```
 GET | localhost:3000/v1/route-permissions/route
-
+```
 Response
 ```json
 {
@@ -432,12 +452,12 @@ Response
 }
 ```
 
-
 ## To Set Routes Permisson
  - When Admin Give Access route `v1/` To Sub-admin 
 
+```
 POST | localhost:3000/v1/route-permissions/route
-
+```
 Request
 ```json
 {

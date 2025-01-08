@@ -29,14 +29,10 @@ userPermission-- {
 */ 
 const checkPermission = async(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> => {
 
-  try {
-    // console.log('checkPermission middleware', req.user?.role);    
+  try {    
     // if user is not admin
     if (req.user?.role !== 1) { // 1->Admin
       const roleID = await roleModel.findOne({ value: req.user?.role });
-      
-     //  console.log('roleID',roleID?._id);      
-     // console.log('checkPermission middleware', req.method, req.originalUrl, roleID?._id);
       
      // check if user has permission to access this route
       const routePermission = await routePermissionHelper(req.originalUrl, req.method, roleID?._id);
@@ -90,9 +86,7 @@ const checkPermission = async(req: AuthenticatedRequest, res: Response, next: Ne
         } 
         res.status(403).json(response);
         return;
-      }        
-      console.log('1.userPermission--', userPermissions);          
-      console.log('2. routePermission--', routePermission);
+      }              
     }
     next(); 
   }catch (error) {

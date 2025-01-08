@@ -1,3 +1,25 @@
+# Role Based Access Control
+RBAC (Role-Based Access Control) is a security model used to manage user permissions by assigning roles to users. Each role has a set of predefined permissions, and users inherit these permissions based on their assigned roles. This approach simplifies permission management and ensures that users can access only the resources they are authorized to use.
+
+In short:
+- Roles define permissions.
+- Users are assigned to roles.
+- Access is granted based on the roles.
+
+--- 
+
+## How to start project
+1. git clone 
+2. cd backend 
+    - npm install
+    - npm install typescript ts-node @types/node --save-dev
+    - npm run build
+    - npm start
+    - npm run start:dev (nodemon)
+
+---
+
+## Project Directory Structure
 ```
 └── 📁backend
     └── 📁src
@@ -32,6 +54,7 @@
                 └── role.ts
                 └── routePermissions.ts
                 └── user.ts
+                └── userPermission.ts
         └── 📁models
             └── categories.ts
             └── comments.ts
@@ -70,5 +93,3 @@
     └── package.json
     └── tsconfig.json
 ```
-
-
