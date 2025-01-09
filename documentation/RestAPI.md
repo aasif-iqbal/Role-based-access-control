@@ -6,7 +6,7 @@ POST | localhost:3000/v1/users/register
 Request
 ```json
 {
-	"name": "Mahesh",
+    "name": "Mahesh",
     "email":"Mahesh123@gmail.com",
     "password":"12345"
 }
@@ -150,7 +150,7 @@ Response
 }
 ```
 
-## create Permissions
+## Create Permissions
 ```
 POST |  localhost:3000/v1/permissions
 ```
@@ -185,7 +185,7 @@ Response
 ```
 
 
-## Create categories
+## Create Categories
 ```
 POST | localhost:3000/v1/categories
 ```
@@ -215,6 +215,7 @@ POST | localhost:3000/v1/categories
 ```
 POST | localhost:3000/v1/posts
 ```
+Response
 ```json
 {
     "title":"TypeScript and OOP",
@@ -453,7 +454,7 @@ Response
 ```
 
 ## To Set Routes Permisson
- - When Admin Give Access route `v1/` To Sub-admin 
+ - When Admin Give Access route `/v1/categorie` To Sub-admin 
 
 ```
 POST | localhost:3000/v1/route-permissions/route
