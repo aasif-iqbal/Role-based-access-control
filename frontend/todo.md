@@ -1,0 +1,1 @@
+Create a view using React.js or EJS.

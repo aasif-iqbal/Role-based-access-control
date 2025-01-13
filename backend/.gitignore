@@ -3,7 +3,7 @@
 
 node_modules
 
-../.DS_Store
+./.DS_Store
 
 # Output of the TypeScript compiler
 # Ignore the compiled JavaScript files in the dist directory
